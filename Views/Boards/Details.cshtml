@@ -1,0 +1,114 @@
+@model quill.Entities.Board
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="board-container" style="background-image: url('@Model.BG_URL'); background-size: cover; background-position: center; min-height: calc(100vh - 60px); padding: 20px; border-radius: 8px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-white bg-dark bg-opacity-50 p-2 rounded">@Model.Name</h1>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Board Settings
+            </a>
+        </div>
+    </div>
+
+    <div class="lists-container d-flex gap-3 overflow-auto pb-3" style="min-height: calc(100vh - 150px);">
+        @if (Model.QLists.Any())
+        {
+            @foreach (var list in Model.QLists)
+            {
+                <div class="list bg-light rounded shadow-sm" style="min-width: 300px; max-width: 300px;">
+                    <div class="list-header p-2 border-bottom d-flex justify-content-between align-items-center" style="background-color: @list.Color;">
+                        <h5 class="mb-0 text-white">@list.Title</h5>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-three-dots"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Edit</a></li>
+                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="list-body p-2">
+                        @if (list.Items.Any())
+                        {
+                            @foreach (var item in list.Items)
+                            {
+                                <div class="card mb-2 @(item.IsFinished ? "bg-light text-muted" : "")">
+                                    <div class="card-body p-2">
+                                        <h6 class="card-title @(item.IsFinished ? "text-decoration-line-through" : "")">@item.Title</h6>
+                                        <p class="card-text small mb-1">@item.Content</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" @(item.IsFinished ? "checked" : "") id="item-@item.Id">
+                                                <label class="form-check-label" for="item-@item.Id">
+                                                    Done
+                                                </label>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <button class="btn btn-sm btn-outline-primary w-100 mt-2">
+                            <i class="bi bi-plus"></i> Add Card
+                        </button>
+                    </div>
+                </div>
+            }
+        }
+        
+            <button class="btn bg-light bg-opacity-75 btn" style="height: fit-content; width: fit-content">
+                <i class="bi bi-plus"></i> +
+            </button>
+    </div>
+</div>
+
+<style>
+    .lists-container {
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 1rem;
+    }
+    
+    .list {
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100vh - 150px);
+    }
+    
+    .list-body {
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('.form-check-input');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const itemId = this.id.split('-')[1];
+                    const card = this.closest('.card');
+                    const title = card.querySelector('.card-title');
+                    
+                    if (this.checked) {
+                        card.classList.add('bg-light', 'text-muted');
+                        title.classList.add('text-decoration-line-through');
+                    } else {
+                        card.classList.remove('bg-light', 'text-muted');
+                        title.classList.remove('text-decoration-line-through');
+                    }
+                    
+                });
+            });
+        });
+    </script>
+}

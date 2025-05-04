@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="container text-center py-5">
+    <h1 class="display-4 mb-3">Organize your thoughts with <span class="text-primary">Quill</span></h1>
+    <p class="lead mb-4">The simple, flexible, and visual way to manage your projects and organize your ideas.</p>
+
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a class="btn btn-primary btn-lg" asp-controller="Account" asp-action="Register">Get Started</a>
+        <a class="btn btn-outline-secondary btn-lg" asp-controller="Boards" asp-action="Index">Try Demo</a>
+    </div>
+</div>

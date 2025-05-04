@@ -1,0 +1,36 @@
+@model quill.Entities.Board
+
+@{
+    ViewData["Title"] = "Delete Board";
+}
+
+<div class="container mt-4">
+    <div class="card border-danger">
+        <div class="card-header bg-danger text-white">
+            <h3>Delete Board</h3>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Are you sure you want to delete the board "@Model.Name"?</h5>
+            <p class="card-text text-danger">
+                This action cannot be undone. All lists and items in this board will be permanently deleted.
+            </p>
+            
+            <div class="card mb-3" style="max-width: 300px; background-image: url('@Model.BG_URL'); background-size: cover; height: 150px;">
+                <div class="card-body">
+                    <h5 class="card-title bg-white bg-opacity-75 p-1 rounded">@Model.Name</h5>
+                </div>
+                <div class="card-footer bg-white bg-opacity-75">
+                    <small>Contains @Model.QLists.Count lists and @Model.QLists.Sum(l => l.Items.Count) items</small>
+                </div>
+            </div>
+            
+            <form asp-action="Delete" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">Delete Board</button>
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

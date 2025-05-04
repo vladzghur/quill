@@ -1,0 +1,30 @@
+@model quill.Entities.Board
+
+@{
+    ViewData["Title"] = "Edit Board";
+}
+
+<div class="container mt-4">
+    <h1>Settings: @Model.Name</h1>
+
+    <form asp-action="SaveBoard" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group mb-3">
+            <label asp-for="Name" class="form-label">Board Name</label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="BG_URL" class="form-label">Background Image URL</label>
+            <input asp-for="BG_URL" class="form-control" />
+        </div>
+
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </form>
+    
+</div>

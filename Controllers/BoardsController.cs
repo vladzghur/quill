@@ -24,10 +24,10 @@ public class BoardsController : Controller
     {
         var storage = _resolver.GetStorage();
         Board newBoard = await storage.CreateBoardAsync();
-        return RedirectToAction("Edit", new { id = newBoard.Id });
+        return RedirectToAction("View", new { id = newBoard.Id });
     }
     
-    public async Task<IActionResult> Edit(int id)
+    public async Task<IActionResult> Settings(int id)
     {
         var storage = _resolver.GetStorage();
         Board? board = await storage.LoadBoardAsync(id);
@@ -43,6 +43,7 @@ public class BoardsController : Controller
     [HttpPost]
     public async Task<IActionResult> SaveBoard(Board board)
     {
+        
         if (ModelState.IsValid)
         {
             var storage = _resolver.GetStorage();
@@ -50,10 +51,10 @@ public class BoardsController : Controller
             return RedirectToAction("Index");
         }
         
-        return View("Edit", board);
+        return RedirectToAction("Delete");
     }
     
-    public async Task<IActionResult> Details(int id)
+    public async Task<IActionResult> View(int id)
     {
         var storage = _resolver.GetStorage();
         Board? board = await storage.LoadBoardAsync(id);
